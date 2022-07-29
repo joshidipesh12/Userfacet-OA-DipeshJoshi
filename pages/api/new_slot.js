@@ -6,11 +6,13 @@ import consts from "../../public/constants.json";
 export default function handler(req, res) {
   if (req.method === "POST") {
     if (!req.body) return ResponseError(res, 400, "Invalid Data Recieved");
-    const weekday = req.body.weekday.toLowerCase();
+    const body = JSON.parse(req.body);
+    const weekday = body.weekday?.toLowerCase();
+    console.log(weekday);
     const dayCheck = Object.keys(config.availability).includes(weekday);
     if (dayCheck) {
       // checking multiple slot existance
-      const { start_time, end_time } = req.body;
+      const { start_time, end_time } = body;
       const hasStart = config.availability.monday.reduce(
         (result, slot) => result || slot.start_time === start_time,
         false
@@ -22,7 +24,7 @@ export default function handler(req, res) {
 
       if (hasStart && hasEnd) {
         let payload = _.cloneDeep(consts.default_payload);
-        payload.weekday = req.body.weekday;
+        payload.weekday = body.weekday;
         payload.start_time = start_time;
         payload.end_time = end_time;
 
@@ -32,7 +34,7 @@ export default function handler(req, res) {
             payload.date = dayjs().add(i, "days").format("d MMMM YYYY");
           }
         }
-        console.log(`[LOG] New Slot Booked for ${req.body.full_name}`);
+        console.log(`[LOG] New Slot Booked for ${body.full_name}`);
         return ResponseSuccess(res, 200, payload);
       }
     }

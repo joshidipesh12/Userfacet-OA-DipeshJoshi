@@ -31,7 +31,7 @@ export default function Home() {
   const [openSnackbar] = useSnackbar();
 
   useEffect(() => {
-    console.log(localStorage.getItem("weekday"));
+    console.log("weekday: ", localStorage.getItem("weekday"));
     setWeekday(localStorage.getItem("weekday") ?? "");
     setStart(localStorage.getItem("start") ?? "");
     setEnd(localStorage.getItem("end") ?? "");
@@ -58,13 +58,13 @@ export default function Home() {
       let res = await fetch("/api/new_slot", {
         method: "POST",
         "Content-Type": "application/json",
-        body: {
+        body: JSON.stringify({
           full_name: fullName,
           email: email,
           weekday: weekday,
           start_time: start,
           end_time: end,
-        },
+        }),
       });
       let resJson = await res.json();
       if (res.slot_confirmed === "true") {
@@ -128,12 +128,17 @@ export default function Home() {
                 getOptionLabel={(option) => option}
                 autoSelect={true}
                 onChange={(e, v, r, d) => {
-                  if (r === "selectOption") {
+                  if (r === "selectOption" && v.length) {
                     setWeekday(v);
                   }
                 }}
                 renderInput={(params) => (
-                  <TextField {...params} label="Weekday" margin="normal" />
+                  <TextField
+                    {...params}
+                    label="Weekday"
+                    margin="normal"
+                    value={weekday}
+                  />
                 )}
                 renderOption={(props, option, { inputValue }) => {
                   const matches = match(option, inputValue);
@@ -166,7 +171,7 @@ export default function Home() {
                   ) ?? []
                 }
                 onChange={(e, v, r, d) => {
-                  if (r === "selectOption") {
+                  if (r === "selectOption" && v.length) {
                     setStart(v);
                   }
                 }}
@@ -202,7 +207,7 @@ export default function Home() {
                   []
                 }
                 onChange={(e, v, r, d) => {
-                  if (r === "selectOption") {
+                  if (r === "selectOption" && v.length) {
                     setEnd(v);
                   }
                 }}
