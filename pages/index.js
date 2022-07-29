@@ -31,7 +31,6 @@ export default function Home() {
   const [openSnackbar] = useSnackbar();
 
   useEffect(() => {
-    console.log("weekday: ", localStorage.getItem("weekday"));
     setWeekday(localStorage.getItem("weekday") ?? "");
     setStart(localStorage.getItem("start") ?? "");
     setEnd(localStorage.getItem("end") ?? "");
@@ -51,9 +50,10 @@ export default function Home() {
       !weekday.length ||
       !start.length ||
       !end.length
-    ) {
+    )
       return openSnackbar("Please Fill Details Properly!");
-    }
+
+    if (start === end) return openSnackbar("Please Pick A Valid Slot Time!");
     try {
       let res = await fetch("/api/new_slot", {
         method: "POST",
@@ -106,20 +106,20 @@ export default function Home() {
               <TextField
                 value={fullName}
                 label="Name"
-                style={{ marginBottom: 10 }}
+                style={{ flex: 1, minWidth: 200 }}
                 onChange={(e) => setFullName(e.currentTarget.value)}
               />
               <TextField
                 value={email}
                 label="Email"
-                style={{ marginInline: 10 }}
+                style={{ flex: 1, minWidth: 200 }}
                 onChange={(e) => setEmail(e.currentTarget.value)}
               />
             </div>
             <div className={styles.section}>
               <Autocomplete
-                sx={{ width: 300 }}
-                options={Object.keys(config.availability)}
+                sx={{ flex: 1, minWidth: 200 }}
+                options={consts.dayMap}
                 getOptionLabel={(option) => option}
                 onChange={(e, v, r, d) => {
                   if (r === "selectOption" && v.length) {
@@ -158,17 +158,14 @@ export default function Home() {
             </div>
             <div className={styles.section}>
               <Autocomplete
-                sx={{ width: 300 }}
-                options={
-                  config.availability[weekday]?.map(
-                    (slot) => slot.start_time
-                  ) ?? []
-                }
+                sx={{ flex: 1, minWidth: 200 }}
+                options={slots.map(
+                  (s) => `${(s % 12) + 1} ${s >= 12 && s !== 0 ? "PM" : "AM"}`
+                )}
                 onChange={(e, v, r, d) => {
-                  if (r === "selectOption" && v.length) {
-                    setStart(v);
-                  }
+                  if (r === "selectOption" && v.length) setStart(v);
                 }}
+                noOptionsText="No Slot Available"
                 getOptionLabel={(option) => option}
                 renderInput={(params) => (
                   <TextField {...params} label="Start Time" margin="normal" />
@@ -195,15 +192,12 @@ export default function Home() {
                 }}
               />
               <Autocomplete
-                sx={{ width: 300 }}
-                options={
-                  config.availability[weekday]?.map((slot) => slot.end_time) ??
-                  []
-                }
+                sx={{ flex: 1, minWidth: 200 }}
+                options={slots.map(
+                  (s) => `${(s % 12) + 1} ${s >= 12 && s !== 0 ? "PM" : "AM"}`
+                )}
                 onChange={(e, v, r, d) => {
-                  if (r === "selectOption" && v.length) {
-                    setEnd(v);
-                  }
+                  if (r === "selectOption" && v.length) setEnd(v);
                 }}
                 getOptionLabel={(option) => option}
                 renderInput={(params) => (
@@ -287,3 +281,5 @@ const SlotDayRow = ({ day }) => {
     </TableBody>
   );
 };
+
+const slots = Array.from(Array(24).keys());

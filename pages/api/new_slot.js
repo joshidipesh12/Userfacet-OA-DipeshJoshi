@@ -8,7 +8,6 @@ export default function handler(req, res) {
     if (!req.body) return ResponseError(res, 400, "Invalid Data Recieved");
     const body = JSON.parse(req.body);
     const weekday = body.weekday?.toLowerCase();
-    console.log(weekday);
     const dayCheck = Object.keys(config.availability).includes(weekday);
     if (dayCheck) {
       // checking multiple slot existance
