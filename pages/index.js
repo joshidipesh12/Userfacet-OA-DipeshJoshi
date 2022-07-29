@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import config from "../public/availability.json";
@@ -26,8 +26,14 @@ export default function Home() {
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
 
+  useEffect(() => {
+    setWeekday(localStorage.getItem("weekday") ?? "");
+    setStart(localStorage.getItem("start") ?? "");
+    setEnd(localStorage.getItem("end") ?? "");
+  }, []);
+
   const submitHandler = (e) => {
-    e.preventDefault();
+    // e.preventDefault();
   };
 
   return (
@@ -81,7 +87,12 @@ export default function Home() {
                 options={Object.keys(config.availability)}
                 getOptionLabel={(option) => option}
                 renderInput={(params) => (
-                  <TextField {...params} label="Weekday" margin="normal" />
+                  <TextField
+                    {...params}
+                    label="Weekday"
+                    margin="normal"
+                    value={weekday}
+                  />
                 )}
                 renderOption={(props, option, { inputValue }) => {
                   const matches = match(option, inputValue);
@@ -91,7 +102,10 @@ export default function Home() {
                       <div>
                         {parts.map((part, index) => (
                           <span
-                            onClick={() => setWeekday(part.text)}
+                            onClick={() => {
+                              localStorage.setItem("weekday", e.target.value);
+                              setWeekday(part.text);
+                            }}
                             key={index}
                             style={{
                               fontWeight: part.highlight ? 700 : 400,
@@ -116,7 +130,12 @@ export default function Home() {
                 )}
                 getOptionLabel={(option) => option}
                 renderInput={(params) => (
-                  <TextField {...params} label="Start" margin="normal" />
+                  <TextField
+                    {...params}
+                    label="Start"
+                    margin="normal"
+                    value={start}
+                  />
                 )}
                 renderOption={(props, option, { inputValue }) => {
                   const matches = match(option, inputValue);
@@ -126,7 +145,10 @@ export default function Home() {
                       <div>
                         {parts.map((part, index) => (
                           <span
-                            onClick={() => setStart(part.text)}
+                            onClick={() => {
+                              localStorage.setItem("start", e.target.value);
+                              setStart(part.text);
+                            }}
                             key={index}
                             style={{
                               fontWeight: part.highlight ? 700 : 400,
@@ -149,7 +171,12 @@ export default function Home() {
                 )}
                 getOptionLabel={(option) => option}
                 renderInput={(params) => (
-                  <TextField {...params} label="Start" margin="normal" />
+                  <TextField
+                    {...params}
+                    label="Start"
+                    margin="normal"
+                    value={end}
+                  />
                 )}
                 renderOption={(props, option, { inputValue }) => {
                   const matches = match(option, inputValue);
@@ -159,7 +186,10 @@ export default function Home() {
                       <div>
                         {parts.map((part, index) => (
                           <span
-                            onClick={() => setEnd(part.text)}
+                            onClick={() => {
+                              localStorage.setItem("end", e.target.value);
+                              setEnd(part.text);
+                            }}
                             key={index}
                             style={{
                               fontWeight: part.highlight ? 700 : 400,
