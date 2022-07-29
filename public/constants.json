@@ -1,0 +1,17 @@
+{
+  "dayMap": [
+    "sunday",
+    "monday",
+    "tuesday",
+    "wednesday",
+    "thursday",
+    "friday",
+    "saturday"
+  ],
+  "default_payload": {
+    "weekday": "Monday",
+    "start_time": "9 AM",
+    "end_time": "10 AM",
+    "date": "1 August 2022"
+  }
+}

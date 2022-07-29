@@ -12,7 +12,9 @@ export default function Home() {
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
 
-      <main className={styles.main}></main>
+      <main className={styles.main}>
+        <h1 className={styles.h1}></h1>
+      </main>
     </div>
   );
 }
