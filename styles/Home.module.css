@@ -2,6 +2,10 @@
   padding: 0 2rem;
 }
 
+.container::-webkit-scrollbar {
+  display: none;
+}
+
 .main {
   min-height: 100vh;
   padding: 4rem 0;
@@ -12,6 +16,38 @@
   align-items: center;
 }
 
+.h1 {
+  text-align: center;
+}
+
+.bottom_container {
+  flex: 1;
+  min-height: 80%;
+  width: 100%;
+  display: flex;
+  margin-top: 5%;
+}
+
+.availability {
+  flex: 1;
+}
+
+.form_container {
+  flex: 3;
+  display: flex;
+  flex-direction: column;
+}
+
+.section {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  margin-bottom: 2%;
+  flex-wrap: wrap;
+}
+
 @media (max-width: 600px) {
-  
+  .bottom_container {
+    flex-direction: column-reverse;
+  }
 }

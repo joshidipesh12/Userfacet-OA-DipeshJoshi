@@ -11,6 +11,7 @@
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",
     "@mui/material": "^5.9.2",
+    "autosuggest-highlight": "^3.3.4",
     "dayjs": "^1.11.4",
     "lodash": "^4.17.21",
     "next": "12.2.3",
