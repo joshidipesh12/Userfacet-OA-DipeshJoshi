@@ -67,7 +67,7 @@ export default function Home() {
         }),
       });
       let resJson = await res.json();
-      if (res.slot_confirmed === "true") {
+      if (resJson.slot_confirmed === "true") {
         openSnackbar(`Slot Confirmed for ${resJson.date}`);
       } else {
         openSnackbar(resJson.reason);
@@ -101,12 +101,7 @@ export default function Home() {
               </Table>
             </TableContainer>
           </div>
-          <form
-            action="/api/new_slot"
-            method="POST"
-            className={styles.form_container}
-            onSubmit={submitHandler}
-          >
+          <form className={styles.form_container} onSubmit={submitHandler}>
             <div className={styles.section}>
               <TextField
                 value={fullName}
