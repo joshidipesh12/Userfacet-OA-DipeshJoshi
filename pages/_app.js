@@ -1,7 +1,12 @@
-import '../styles/globals.css'
+import "../styles/globals.css";
+import SnackbarProvider from "react-simple-snackbar";
 
 function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />
+  return (
+    <SnackbarProvider>
+      <Component {...pageProps} />
+    </SnackbarProvider>
+  );
 }
 
-export default MyApp
+export default MyApp;

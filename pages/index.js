@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import config from "../public/availability.json";
@@ -19,6 +19,8 @@ import Autocomplete from "@mui/material/Autocomplete";
 import parse from "autosuggest-highlight/parse";
 import match from "autosuggest-highlight/match";
 
+import { useSnackbar } from "react-simple-snackbar";
+
 export default function Home() {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
@@ -26,14 +28,53 @@ export default function Home() {
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
 
+  const [openSnackbar] = useSnackbar();
+
   useEffect(() => {
+    console.log(localStorage.getItem("weekday"));
     setWeekday(localStorage.getItem("weekday") ?? "");
     setStart(localStorage.getItem("start") ?? "");
     setEnd(localStorage.getItem("end") ?? "");
   }, []);
 
-  const submitHandler = (e) => {
-    // e.preventDefault();
+  useEffect(() => {
+    localStorage.setItem("weekday", weekday);
+    localStorage.setItem("start", start);
+    localStorage.setItem("end", end);
+  }, [weekday, start, end]);
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    if (
+      !fullName.length ||
+      !email.length ||
+      !weekday.length ||
+      !start.length ||
+      !end.length
+    ) {
+      return openSnackbar("Please Fill Details Properly!");
+    }
+    try {
+      let res = await fetch("/api/new_slot", {
+        method: "POST",
+        "Content-Type": "application/json",
+        body: {
+          full_name: fullName,
+          email: email,
+          weekday: weekday,
+          start_time: start,
+          end_time: end,
+        },
+      });
+      let resJson = await res.json();
+      if (res.slot_confirmed === "true") {
+        openSnackbar(`Slot Confirmed for ${resJson.date}`);
+      } else {
+        openSnackbar(resJson.reason);
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -82,17 +123,17 @@ export default function Home() {
             </div>
             <div className={styles.section}>
               <Autocomplete
-                id="highlights-demo"
                 sx={{ width: 300 }}
                 options={Object.keys(config.availability)}
                 getOptionLabel={(option) => option}
+                autoSelect={true}
+                onChange={(e, v, r, d) => {
+                  if (r === "selectOption") {
+                    setWeekday(v);
+                  }
+                }}
                 renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Weekday"
-                    margin="normal"
-                    value={weekday}
-                  />
+                  <TextField {...params} label="Weekday" margin="normal" />
                 )}
                 renderOption={(props, option, { inputValue }) => {
                   const matches = match(option, inputValue);
@@ -102,10 +143,6 @@ export default function Home() {
                       <div>
                         {parts.map((part, index) => (
                           <span
-                            onClick={() => {
-                              localStorage.setItem("weekday", e.target.value);
-                              setWeekday(part.text);
-                            }}
                             key={index}
                             style={{
                               fontWeight: part.highlight ? 700 : 400,
@@ -122,20 +159,20 @@ export default function Home() {
             </div>
             <div className={styles.section}>
               <Autocomplete
-                id="highlights-demo"
-                disabled={!weekday.length}
                 sx={{ width: 300 }}
-                options={config.availability[weekday]?.map(
-                  (slot) => slot.start_time
-                )}
+                options={
+                  config.availability[weekday]?.map(
+                    (slot) => slot.start_time
+                  ) ?? []
+                }
+                onChange={(e, v, r, d) => {
+                  if (r === "selectOption") {
+                    setStart(v);
+                  }
+                }}
                 getOptionLabel={(option) => option}
                 renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Start"
-                    margin="normal"
-                    value={start}
-                  />
+                  <TextField {...params} label="Start Time" margin="normal" />
                 )}
                 renderOption={(props, option, { inputValue }) => {
                   const matches = match(option, inputValue);
@@ -145,10 +182,6 @@ export default function Home() {
                       <div>
                         {parts.map((part, index) => (
                           <span
-                            onClick={() => {
-                              localStorage.setItem("start", e.target.value);
-                              setStart(part.text);
-                            }}
                             key={index}
                             style={{
                               fontWeight: part.highlight ? 700 : 400,
@@ -163,17 +196,21 @@ export default function Home() {
                 }}
               />
               <Autocomplete
-                id="highlights-demo"
-                disabled={!weekday.length}
                 sx={{ width: 300 }}
-                options={config.availability[weekday]?.map(
-                  (slot) => slot.end_time
-                )}
+                options={
+                  config.availability[weekday]?.map((slot) => slot.end_time) ??
+                  []
+                }
+                onChange={(e, v, r, d) => {
+                  if (r === "selectOption") {
+                    setEnd(v);
+                  }
+                }}
                 getOptionLabel={(option) => option}
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    label="Start"
+                    label="End Time"
                     margin="normal"
                     value={end}
                   />
@@ -186,10 +223,6 @@ export default function Home() {
                       <div>
                         {parts.map((part, index) => (
                           <span
-                            onClick={() => {
-                              localStorage.setItem("end", e.target.value);
-                              setEnd(part.text);
-                            }}
                             key={index}
                             style={{
                               fontWeight: part.highlight ? 700 : 400,
@@ -221,7 +254,7 @@ export default function Home() {
 const SlotDayRow = ({ day }) => {
   const [open, toggle] = useState(false);
   return (
-    <>
+    <TableBody>
       <TableRow>
         <TableCell>{day.toUpperCase()}</TableCell>
         <TableCell align="right">
@@ -242,7 +275,7 @@ const SlotDayRow = ({ day }) => {
               </TableHead>
               <TableBody>
                 {config.availability[day].map((slot) => (
-                  <TableRow key={slot}>
+                  <TableRow key={`${day} ${slot.start_time}`}>
                     <TableCell align="right">{slot.start_time}</TableCell>
                     <TableCell align="right">{slot.end_time}</TableCell>
                   </TableRow>
@@ -252,6 +285,6 @@ const SlotDayRow = ({ day }) => {
           </Collapse>
         </TableCell>
       </TableRow>
-    </>
+    </TableBody>
   );
 };
