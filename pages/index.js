@@ -121,7 +121,6 @@ export default function Home() {
                 sx={{ width: 300 }}
                 options={Object.keys(config.availability)}
                 getOptionLabel={(option) => option}
-                autoSelect={true}
                 onChange={(e, v, r, d) => {
                   if (r === "selectOption" && v.length) {
                     setWeekday(v);
