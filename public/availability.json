@@ -1,0 +1,32 @@
+{
+  "full_name": "Anu Agarwal",
+  "email": "anu.agarwal@test.com",
+  "availability": {
+    "monday": [
+      { "start_time": "9 AM", "end_time": "10 AM" },
+      { "start_time": "10 AM", "end_time": "11 AM" },
+      { "start_time": "11 AM", "end_time": "12 PM" },
+      { "start_time": "2 PM", "end_time": "3 PM" },
+      { "start_time": "3 PM", "end_time": "4 PM" },
+      { "start_time": "4 PM", "end_time": "5 PM" }
+    ],
+    "wednesday": [
+      { "start_time": "9 AM", "end_time": "10 AM" },
+      { "start_time": "10 AM", "end_time": "11 AM" },
+      { "start_time": "11 AM", "end_time": "12 PM" },
+      { "start_time": "1 PM", "end_time": "2 PM" },
+      { "start_time": "2 PM", "end_time": "3 PM" },
+      { "start_time": "3 PM", "end_time": "4 PM" },
+      { "start_time": "4 PM", "end_time": "5 PM" }
+    ],
+    "friday": [
+      { "start_time": "9 AM", "end_time": "10 AM" },
+      { "start_time": "10 AM", "end_time": "11 PM" },
+      { "start_time": "11 AM", "end_time": "12 PM" },
+      { "start_time": "12 PM", "end_time": "1 PM" },
+      { "start_time": "4 PM", "end_time": "5 PM" },
+      { "start_time": "5 PM", "end_time": "6 PM" },
+      { "start_time": "6 PM", "end_time": "7 PM" }
+    ]
+  }
+}
