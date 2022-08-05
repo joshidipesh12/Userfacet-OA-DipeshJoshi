@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Head from "next/head";
+import Link from "next/link";
 import styles from "../styles/Home.module.css";
 import config from "../public/availability.json";
 import consts from "../public/constants.json";
@@ -37,9 +38,10 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    localStorage.setItem("weekday", weekday);
-    localStorage.setItem("start", start);
-    localStorage.setItem("end", end);
+    setTimeout(() => {
+      localStorage.setItem("start", start);
+      localStorage.setItem("end", end);
+    }, 100);
   }, [weekday, start, end]);
 
   const submitHandler = async (e) => {
@@ -88,6 +90,11 @@ export default function Home() {
 
       <main className={styles.main}>
         <h1 className={styles.h1}>Class Slot Scheduler</h1>
+        <u>
+          <Link href={`mailto:${config.email}`}>
+            <div className={styles.h1}>{config.full_name}</div>
+          </Link>
+        </u>
         <div className={styles.bottom_container}>
           <div className={styles.availability}>
             <Typography variant="h6" gutterBottom component="div">
@@ -124,6 +131,7 @@ export default function Home() {
                 onChange={(e, v, r, d) => {
                   if (r === "selectOption" && v.length) {
                     setWeekday(v);
+                    localStorage.setItem("weekday", weekday);
                   }
                 }}
                 renderInput={(params) => (
