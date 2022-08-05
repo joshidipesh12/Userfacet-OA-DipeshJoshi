@@ -1,3 +1,43 @@
+# Problem Statement
+
+### Backend Task
+
+Consider there is a teacher who wants to teach students online. The teacher has specified their availability for the weekdays.  You will be given the availability for a teacher in a JSON file.
+The teacher now wants to accept requests for a class from the students. In response to each request the teacher wants to reply with a date and the time slot for which the class is scheduled. Your task is to give the students a way to book classes. That can be divided into the following sub-tasks:
+Create a Django/Express.JS application for this task:
+- Read the teacher_availability.json file given to you in memory.
+- Create an API Endpoint on which the student can send a POST Request to schedule a class.
+- The request will contain the student's name, email address and their preferred day and time slot for the class.
+- If a teacher is available at the student's preferred day and time slot, send back a success message.
+- If a teacher is not available for a student’s preferred weekday and time slot, return an error message stating that the requested date and time slot is booked.
+- Consider each student request to be independent of each other and the teacher availability to be the same for each request.
+- Sample JSON for student request format and response format can be found here.
+
+#### Backend Submission
+
+- Create an application in your localhost using Django/Express.JS as per your choice and write the API logic for the given task there.
+- Include a requirements.txt/package.json file containing the list of all used dependencies.
+- Push the code along with the output file to a public git repository (preferably Github).
+- Submit the link of that repository in the Google Form provided.
+
+### Frontend Task
+Design the frontend in React for the API created above. It should include:
+- A UI Component to display the teacher availability on the frontend
+- Dropdowns for a user to select weekdays, start time and end time for booking a slot. By default the weekday should be selected to today’s day and start time should be selected to the current hour.
+- Once a student submits a request to book a class, they should receive a response with either success or error. You are free to design the notification system as you please.
+- On page refresh, the selection in all the dropdowns should be preserved.
+- A reset button which selects the default value for all the dropdowns.
+
+#### Frontend Submission
+
+- You can use React - CodeSandbox  https://codesandbox.io/s/new . Make sure you Sign up , rename your project and  save your code. 
+	  Or
+  You have to push your code to a public git repo and publish it to a serverless platform (like netlify) to demo it.
+
+- Submit the links using the google form provided.
+
+
+## NEXT.JS
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
