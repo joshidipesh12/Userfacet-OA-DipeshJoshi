@@ -5,13 +5,13 @@
 Consider there is a teacher who wants to teach students online. The teacher has specified their availability for the weekdays.  You will be given the availability for a teacher in a JSON file.
 The teacher now wants to accept requests for a class from the students. In response to each request the teacher wants to reply with a date and the time slot for which the class is scheduled. Your task is to give the students a way to book classes. That can be divided into the following sub-tasks:
 Create a Django/Express.JS application for this task:
-- Read the teacher_availability.json file given to you in memory.
+- Read the [teacher_availability.json](https://raw.githubusercontent.com/rohit-userfacet/userfacet-backend-testcase/main/teacher_availability.json) file given to you in memory.
 - Create an API Endpoint on which the student can send a POST Request to schedule a class.
 - The request will contain the student's name, email address and their preferred day and time slot for the class.
 - If a teacher is available at the student's preferred day and time slot, send back a success message.
 - If a teacher is not available for a student’s preferred weekday and time slot, return an error message stating that the requested date and time slot is booked.
 - Consider each student request to be independent of each other and the teacher availability to be the same for each request.
-- Sample JSON for student request format and response format can be found here.
+- Sample JSON for student request format and response format can be found [here](https://github.com/rohit-userfacet/userfacet-backend-testcase/blob/main/student.md).
 
 #### Backend Submission
 
